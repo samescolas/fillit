@@ -3,19 +3,18 @@ NAME = fillit
 SRCS = \
 	   main.c		\
 	   input.c		\
-	   t_tet.c
+	   t_tet.c		\
+	   translate.c	\
+	   env.c
 
 OBJS = $(SRCS:.c=.o)
 
-HEADER = includes/fillit.h
-
 all: $(NAME)
 
-$(NAME): $(OBJS)
-	gcc -Iincludes -o $(NAME) -Wall -Wextra -Werror $(OBJS)
-
-$(OBJS): $(SRCS) $(HEADER)
-	gcc -Iincludes -Wall -Werror -Wextra -c  srcs/$(SRCS)
+$(NAME):
+	make -C libft
+	gcc -Wall -Werror -Wextra -c $(SRCS) -I libft
+	gcc -L libft -lft $(OBJS) -o $(NAME)
 
 clean: 
 	rm -f $(OBJS)

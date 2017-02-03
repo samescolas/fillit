@@ -1,30 +1,45 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   translate.c                                        :+:      :+:    :+:   */
+/*   t_tet.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/02/02 15:09:42 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/02 15:15:41 by sescolas         ###   ########.fr       */
+/*   Created: 2017/02/02 14:44:51 by sescolas          #+#    #+#             */
+/*   Updated: 2017/02/02 17:00:24 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-char	*translate(char *str, t_env *env)
+t_tet	*create_tet(int id, char *pos)
 {
-	char	*tet;
-	char	*tmp;
+	t_tet	*tet;
 
-	tmp = str;
-	if (!(tet = (char *)malloc((() + 1) * sizeof(char))))
-		return (NULL);
-	while (*tmp)
+	if ((tet = (t_tet *)malloc(sizeof(t_tet))))
 	{
-		if (*tmp == PIECE_MARKER)
-			*tet++ = '1';
-		if (*tmp == EMPTY_MARKER)
-			*tet++ = '0';
-		++tmp;
+		tet->pos = pos;
+		tet->id = id;
+		tet->r = NULL;
+		tet->l = NULL;
+	}
+	return (tet);
+}
+
+void	append_tet(t_tet *tet, t_tet **list)
+{
+	t_tet	*tmp;
+
+	if (!list)
+		return ;
+	if (!*list)
+		*list = tet;
+	else
+	{
+		tmp = *list;
+		while (tmp->r)
+			tmp = tmp->r;
+		tmp->r = tet;
+		tet->l = tmp;
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 14:03:20 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/02 15:15:38 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/02 19:23:35 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,25 +15,26 @@
 static char	*read_tet(int fd, char **tet)
 {
 	if (!(*tet = (char *)malloc(22 * sizeof(char))))
-		return (0);
+		return (NULL);
 	ft_bzero(*tet, 22);
-	read(fd, *tet, 21);
+	if ((read(fd, *tet, 21) <= 0))
+		return (NULL);
 	return (*tet);
 }
 
 static int	valid_marker(char *tet, int pos)
 {
 	if (pos % 5 != 0)
-		if (shape[pos - 1] == PIECE_MARKER)
+		if (tet[pos - 1] == PIECE_MARKER)
 			return (1);
 	if ((pos + 1) % 5 != 0)
-		if (shape[pos + 1] == PIECE_MARKER)
+		if (tet[pos + 1] == PIECE_MARKER)
 			return (1);
 	if (pos > 4)
-		if (shape[pos - 5] == PIECE_MARKER)
+		if (tet[pos - 5] == PIECE_MARKER)
 			return (1);
 	if (pos < 15)
-		if (shape[pos + 5] == PIECE_MARKER)
+		if (tet[pos + 5] == PIECE_MARKER)
 			return (1);
 	return (0);
 }
@@ -45,37 +46,39 @@ static int	validate(char *tet)
 
 	if (tet[20] != '\n')
 		return (0);
+	tet[20] = '\0';
 	markers_remaining = 4;
 	i = -1;
 	while (tet[++i])
 	{
-		if ((i + 1) % 5 == 0)
-			if (tet[i] != '\n')
+		if ((i + 1) % 5 == 0 && tet[i] != '\n')
 				return (0);
-		else
-			continue ;
-		if (tet[i] == PIECE_MARKER)
+		else if ((i + 1) % 5 != 0)
 		{
-			if (valid_marker(tet, i))
+			if (tet[i] != PIECE_MARKER && tet[i] != EMPTY_MARKER)
+				return (0);
+			if (tet[i] == PIECE_MARKER && valid_marker(tet, i))
 				--markers_remaining;
-			else
+			else if (tet[i] == PIECE_MARKER)
 				return (0);
 		}
-		else
-			if (tet[i] != EMPTY_MARKER)
-				return (0);				
 	}
+	return (i == 20 && !markers_remaining);
 }
 
-void	read_file(char *path, t_list **tets, t_env *env);
+void	read_file(char *path, t_tet **tets, t_env *env)
 {
 	int		fd;
 	char	*tet;
 
 	if ((fd = open(path, O_RDONLY)) > 0)
 	{
-		while (validate(read_tet(fd, &tet)))
-			append_tet(create_tet(++(env->num_tets), translate(tet, env->grid_size)));
+		while (read_tet(fd, &tet))
+		{
+			printf("shape is %s\n", validate(tet) ? "valid" : "invalid");
+			append_tet(create_tet(++(env->num_tets), translate(tet, env)), tets);
+			printf("called append...\n");
+		}
 		close(fd);
 		if (*tet)
 			write(2, "err: invalid input\n", 19);

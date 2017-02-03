@@ -1,45 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   t_tet.c                                            :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/02/02 14:44:51 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/02 14:55:30 by sescolas         ###   ########.fr       */
+/*   Created: 2017/02/02 14:03:26 by sescolas          #+#    #+#             */
+/*   Updated: 2017/02/02 18:57:57 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-t_tet	*create_tet(int id, char *pos)
+int		main(int ac, char **av)
 {
-	t_tet	*tet;
+	t_env	*env;
+	t_tet	*tets;
 
-	if ((tet = (t_tet *)malloc(sizeof(t_tet))))
+	tets = (t_tet *)malloc(sizeof(t_tet));
+	if (ac == 2)
 	{
-		tet->pos = pos;
-		tet->id = id;
-		tet->r = NULL;
-		tet->l = NULL;
+		create_env(&env);
+		read_file(av[1], &tets, env);
+		env->grid_size = 4;
+		while (tets)
+		{
+			printf("%s\n", tets->pos);
+			tets = tets->r;
+		}
 	}
-	return (tet);
-}
-
-void	append_tet(t_tet *tet, t_tet **list)
-{
-	t_tet	*tmp;
-
-	if (!list)
-		return ;
-	if (!*list)
-		*list = tet;
-	else
-	{
-		tmp = *list;
-		while (tmp->r)
-			tmp = tmp->r;
-		tmp->r = tet;
-		tet->l = tmp;
-	}
+	return (0);
 }
