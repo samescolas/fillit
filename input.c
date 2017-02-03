@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 14:03:20 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/02 19:23:35 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/03 12:10:14 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,13 +75,17 @@ void	read_file(char *path, t_tet **tets, t_env *env)
 	{
 		while (read_tet(fd, &tet))
 		{
-			printf("shape is %s\n", validate(tet) ? "valid" : "invalid");
-			append_tet(create_tet(++(env->num_tets), translate(tet, env)), tets);
-			printf("called append...\n");
+			if (validate(tet))
+				append_tet(create_tet(++(env->num_tets), tet), tets);
+			else
+				break ;
 		}
 		close(fd);
 		if (*tet)
+		{
+			*tets = NULL;
 			write(2, "err: invalid input\n", 19);
+		}
 	}
 	else
 		write(2, "err: invalid file\n", 18);

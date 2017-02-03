@@ -19,13 +19,6 @@ typedef struct		s_col
 	struct s_col	*root;
 }					t_col;
 
-typedef struct		s_env
-{
-	unsigned int	num_tets;
-	unsigned int	grid_size;
-	t_col			*grid;
-}					t_env;
-
 typedef struct		s_link
 {
 	unsigned int	id;
@@ -44,10 +37,21 @@ typedef struct		s_tet
 	struct s_tet	*l;
 }					t_tet;
 
-void	read_file(char *path, t_tet **tets, t_env *env);
-char	*translate(char *str, t_env *env);
-t_tet	*create_tet(int id, char *pos);
-void	append_tet(t_tet *tet, t_tet **list);
-void	create_env(t_env **env);
+typedef struct		s_env
+{
+	unsigned int	num_tets;
+	unsigned int	grid_size;
+	t_tet			**tets;
+	t_col			**grid;
+}					t_env;
+
+void				read_file(char *path, t_tet **tets, t_env *env);
+char				*translate(char *str, t_env *env);
+t_tet				*create_tet(int id, char *pos);
+void				append_tet(t_tet *tet, t_tet **list);
+void				create_env(t_env **env, t_tet **tets);
+void				estimate_grid_size(t_env *env);
+unsigned int		get_width(char *tet);
+unsigned int		get_length(char *tet);
 
 #endif

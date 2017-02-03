@@ -1,45 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   t_tet.c                                            :+:      :+:    :+:   */
+/*   grid.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/02/02 14:44:51 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/03 10:34:55 by sescolas         ###   ########.fr       */
+/*   Created: 2017/02/03 09:47:24 by sescolas          #+#    #+#             */
+/*   Updated: 2017/02/03 12:10:49 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-t_tet	*create_tet(int id, char *pos)
+void	estimate_grid_size(t_env *env)
 {
-	t_tet	*tet;
+	unsigned int		i;
+	t_tet				*tet;
 
-	if ((tet = (t_tet *)malloc(sizeof(t_tet))))
-	{
-		tet->pos = pos;
-		tet->id = id;
-		tet->r = NULL;
-		tet->l = NULL;
-	}
-	return (tet);
-}
-	
-void	append_tet(t_tet *tet, t_tet **list)
-{
-	t_tet	*tmp;
-
-	if (!list)
+	if (!env)
 		return ;
-	if (!*list)
-		*list = tet;
-	else
+	i = 0;
+	while ((unsigned int)ft_exp(i, 2) < env->num_tets * 4)
+		++i;
+	env->grid_size = i;
+	tet = *(env->tets);
+	while (tet)
 	{
-		tmp = *list;
-		while (tmp->r)
-			tmp = tmp->r;
-		tmp->r = tet;
-		tet->l = tmp;
+		if (get_width(tet->pos) > env->grid_size)
+			env->grid_size = get_width(tet->pos);
+		if (get_length(tet->pos) > env->grid_size)
+			env->grid_size = get_length(tet->pos);
+		tet = tet->r;
 	}
 }

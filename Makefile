@@ -5,7 +5,8 @@ SRCS = \
 	   input.c		\
 	   t_tet.c		\
 	   translate.c	\
-	   env.c
+	   env.c		\
+	   grid.c
 
 OBJS = $(SRCS:.c=.o)
 
