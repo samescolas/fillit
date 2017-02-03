@@ -4,6 +4,7 @@ SRCS = \
 	   main.c		\
 	   input.c		\
 	   t_tet.c		\
+	   t_col.c		\
 	   translate.c	\
 	   env.c		\
 	   grid.c

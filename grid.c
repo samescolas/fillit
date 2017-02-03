@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/03 09:47:24 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/03 12:10:49 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/03 14:16:34 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,20 @@ void	estimate_grid_size(t_env *env)
 		if (get_length(tet->pos) > env->grid_size)
 			env->grid_size = get_length(tet->pos);
 		tet = tet->r;
+	}
+}
+
+void	create_grid(t_env *env)
+{
+	unsigned int	i;
+	t_col			*tmp;
+
+	i = 1;
+	*(env->grid) = create_col(NULL);
+	(*(env->grid))->root = *(env->grid);
+	while (i++ < env->grid_size * env->grid_size)
+	{
+		tmp = create_col(*(env->grid));
+		append_col(create_col(*(env->grid)), env->grid);
 	}
 }

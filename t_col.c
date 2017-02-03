@@ -1,45 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   t_tet.c                                            :+:      :+:    :+:   */
+/*   t_col.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/02/02 14:44:51 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/03 13:32:36 by sescolas         ###   ########.fr       */
+/*   Created: 2017/02/03 13:29:44 by sescolas          #+#    #+#             */
+/*   Updated: 2017/02/03 14:09:25 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-t_tet	*create_tet(int id, char *pos)
+t_col	*create_col(t_col *root)
 {
-	t_tet	*tet;
+	t_col	*col;
 
-	if ((tet = (t_tet *)malloc(sizeof(t_tet))))
+	if ((col = (t_col *)malloc(sizeof(t_col))))
 	{
-		tet->pos = pos;
-		tet->id = id;
-		tet->r = NULL;
-		tet->l = NULL;
+		col->size = 0;
+		col->l = NULL;
+		col->r = NULL;
+		col->d = NULL;
+		col->root = root;
 	}
-	return (tet);
+	return (col);
 }
-	
-void	append_tet(t_tet *tet, t_tet **list)
+
+void	append_col(t_col *col, t_col **list)
 {
-	t_tet	*tmp;
+	t_col	*tmp;
 
 	if (!list)
 		return ;
 	if (!*list)
-		*list = tet;
-	else
-	{
-		tmp = *list;
-		while (tmp->r)
-			tmp = tmp->r;
-		tmp->r = tet;
-		tet->l = tmp;
-	}
+		*list = col;
+	tmp = *list;
+	while (tmp->r)
+		tmp = tmp->r;
+	tmp->r = col;
+	col->l = tmp;
 }
