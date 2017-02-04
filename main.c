@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 14:03:26 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/03 16:47:22 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/03 17:09:57 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,10 @@ int		main(int ac, char **av)
 		tmp = *(env->tets);
 		while (tmp)
 		{
-			printf("Original: \n%s\n", translate(tmp->pos, env));
-			printf("New:\n%s\n", translate(shift_up(shift_left(tmp->pos)), env));
+			printf("%s\n", translate(ft_strdup(tmp->pos), env));
+			printf("%s\n\n", translate(shift_top_left(tmp->pos), env));
 			tmp = tmp->r;
 		}
-
 	}
 	return (0);
 }

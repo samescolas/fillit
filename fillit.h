@@ -56,9 +56,7 @@ void				create_grid(t_env *grid);
 void				estimate_grid_size(t_env *env);
 unsigned int		get_width(char *tet);
 unsigned int		get_length(char *tet);
-char				*shift_up(char *tet);
-char				*shift_left(char *tet);
-int					empty_col(char *tet, int col);
+char				*shift_top_left(char *tet);
 
 
 #endif

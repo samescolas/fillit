@@ -6,13 +6,13 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 14:44:51 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/03 13:32:36 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/03 17:13:33 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-t_tet	*create_tet(int id, char *pos)
+t_tet		*create_tet(int id, char *pos)
 {
 	t_tet	*tet;
 
@@ -25,8 +25,8 @@ t_tet	*create_tet(int id, char *pos)
 	}
 	return (tet);
 }
-	
-void	append_tet(t_tet *tet, t_tet **list)
+
+void		append_tet(t_tet *tet, t_tet **list)
 {
 	t_tet	*tmp;
 

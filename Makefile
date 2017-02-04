@@ -7,7 +7,8 @@ SRCS = \
 	   t_col.c		\
 	   translate.c	\
 	   env.c		\
-	   grid.c
+	   grid.c		\
+	   shift.c
 
 OBJS = $(SRCS:.c=.o)
 

@@ -6,13 +6,13 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 14:03:20 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/03 13:24:47 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/03 17:14:11 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-static char	*read_tet(int fd, char **tet)
+static char		*read_tet(int fd, char **tet)
 {
 	if (!(*tet = (char *)malloc(22 * sizeof(char))))
 		return (NULL);
@@ -22,7 +22,7 @@ static char	*read_tet(int fd, char **tet)
 	return (*tet);
 }
 
-static int	valid_marker(char *tet, int pos)
+static int		valid_marker(char *tet, int pos)
 {
 	if (pos % 5 != 0)
 		if (tet[pos - 1] == PIECE_MARKER)
@@ -39,7 +39,7 @@ static int	valid_marker(char *tet, int pos)
 	return (0);
 }
 
-static int	validate(char *tet)
+static int		validate(char *tet)
 {
 	int		markers_remaining;
 	int		i;
@@ -52,7 +52,7 @@ static int	validate(char *tet)
 	while (tet[++i])
 	{
 		if ((i + 1) % 5 == 0 && tet[i] != '\n')
-				return (0);
+			return (0);
 		else if ((i + 1) % 5 != 0)
 		{
 			if (tet[i] != PIECE_MARKER && tet[i] != EMPTY_MARKER)
@@ -66,7 +66,7 @@ static int	validate(char *tet)
 	return (i == 20 && !markers_remaining);
 }
 
-void	read_file(char *path, t_tet **tets, t_env *env)
+void			read_file(char *path, t_tet **tets, t_env *env)
 {
 	int		fd;
 	char	*tet;
