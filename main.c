@@ -6,11 +6,28 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 14:03:26 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/04 19:14:56 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/04 20:35:00 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
+
+void	print_solution(char *solution, unsigned int grid_size)
+{
+	unsigned int		i;
+	unsigned int		j;
+
+	i = 0;
+	j = 0;
+	while (i < grid_size * grid_size)
+	{
+		j = 0;
+		while (j < grid_size)
+			printf("%c", solution[j++ + i] + 'A' - 1);
+		printf("\n");
+		i += grid_size;
+	}
+}
 
 int		main(int ac, char **av)
 {
@@ -28,7 +45,14 @@ int		main(int ac, char **av)
 		read_file(av[1], tets, env);
 		create_grid(env);
 		create_links(env);
-		solve(env, &solution);	
+		while (!solve(env, &solution))
+		{
+			++(env->grid_size);
+			free(solution);
+			solution = ft_strnew(ft_exp(env->grid_size, 2) + 1);
+			create_grid(env);
+		}
+		print_solution(solution, env->grid_size);
 		return (0);
 	}
 	else

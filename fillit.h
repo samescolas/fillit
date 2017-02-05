@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/04 11:17:06 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/04 19:09:21 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/04 20:25:44 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,6 @@ unsigned int		get_length(char *tet);
 char				*shift_top_left(char *tet);
 char				*shift(char *tet, int offset, unsigned int grid_size);
 void				create_links(t_env *env);
-void				solve(t_env *env, char **solution);
+int					solve(t_env *env, char **solution);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/04 18:19:10 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/04 19:28:43 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/04 19:46:05 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,8 @@ void	unlink_tet(t_col *col, t_env *env)
 		tmp = tmp->l;
 	while (tmp)
 	{
-		printf("unlinking col\n");
 		unlink_col(tmp->col, env->grid);
-		printf("unlinking id\n");
 		unlink_id(tmp->id, env->grid);
-		printf("unlinking overlap\n");
 		unlink_overlap(tmp->col);
 		tmp = tmp->r;
 	}
