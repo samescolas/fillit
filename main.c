@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 14:03:26 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/04 20:35:00 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/04 20:48:51 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,9 @@ int		main(int ac, char **av)
 			solution = ft_strnew(ft_exp(env->grid_size, 2) + 1);
 			create_grid(env);
 		}
+		write(1, "solution string:", 17);
+		write(1, solution, ft_exp(env->grid_size, 2));
+		write(1, "\n", 1);
 		print_solution(solution, env->grid_size);
 		return (0);
 	}

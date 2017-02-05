@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/04 16:17:26 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/04 20:39:19 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/04 20:45:58 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,9 @@ int		solve(t_env *env, char **solution)
 	t_col	*col;
 
 	if (!*(env->grid))
-		return (0);
-	if (!(col = choose_col(env->grid)))
 		return (1);
+	if (!(col = choose_col(env->grid)))
+		return (0);
 	add_to_solution(solution, col);
 	unlink_tet(col, env);
 	return (solve(env, solution));
