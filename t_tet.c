@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 14:44:51 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/03 17:13:33 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/04 16:24:19 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ t_tet		*create_tet(int id, char *pos)
 	if ((tet = (t_tet *)malloc(sizeof(t_tet))))
 	{
 		tet->pos = pos;
+		tet->length = get_length(tet->pos);
+		tet->width = get_width(tet->pos);
 		tet->id = id;
 		tet->r = NULL;
 		tet->l = NULL;

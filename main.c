@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 14:03:26 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/03 17:09:57 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/04 19:14:56 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,23 +16,21 @@ int		main(int ac, char **av)
 {
 	t_env	*env;
 	t_tet	**tets;
-	t_tet	*tmp;
+	char	*solution;
 
+	solution = (char *)malloc(sizeof(char) * 101);
+	ft_bzero(solution, 101);
 	tets = (t_tet **)malloc(sizeof(t_tet *));
 	*tets = NULL;
 	if (ac == 2)
 	{
 		create_env(&env, tets);
 		read_file(av[1], tets, env);
-		estimate_grid_size(env);
 		create_grid(env);
-		tmp = *(env->tets);
-		while (tmp)
-		{
-			printf("%s\n", translate(ft_strdup(tmp->pos), env));
-			printf("%s\n\n", translate(shift_top_left(tmp->pos), env));
-			tmp = tmp->r;
-		}
+		create_links(env);
+		solve(env, &solution);	
+		return (0);
 	}
-	return (0);
+	else
+		write(1, "usage: \n", 8);
 }

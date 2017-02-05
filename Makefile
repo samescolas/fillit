@@ -1,14 +1,18 @@
 NAME = fillit
 
-SRCS = \
-	   main.c		\
-	   input.c		\
-	   t_tet.c		\
-	   t_col.c		\
-	   translate.c	\
-	   env.c		\
-	   grid.c		\
-	   shift.c
+SRCS = 					\
+	   main.c			\
+	   input.c			\
+	   t_tet.c			\
+	   t_col.c			\
+	   t_link.c			\
+	   translate.c		\
+	   env.c			\
+	   grid.c			\
+	   shift.c			\
+	   links.c			\
+	   dancing_links.c	\
+	   unlink_tet.c
 
 OBJS = $(SRCS:.c=.o)
 
