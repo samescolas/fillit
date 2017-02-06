@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 14:03:20 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/04 15:34:46 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/05 12:55:25 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ void			read_file(char *path, t_tet **tets, t_env *env)
 		{
 			*tets = NULL;
 			write(2, "err: invalid input\n", 19);
+			exit(1);
 		}
 	}
 	else

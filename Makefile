@@ -6,13 +6,14 @@ SRCS = 					\
 	   t_tet.c			\
 	   t_col.c			\
 	   t_link.c			\
+	   t_env.c			\
 	   translate.c		\
-	   env.c			\
 	   grid.c			\
 	   shift.c			\
 	   links.c			\
 	   dancing_links.c	\
-	   unlink_tet.c
+	   unlink_tet.c		\
+	   permutations.c
 
 OBJS = $(SRCS:.c=.o)
 

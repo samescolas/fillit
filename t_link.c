@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/04 13:25:10 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/04 19:31:54 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/05 18:00:43 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,5 +58,5 @@ void	unlink_link(t_link *link)
 		(link->col)->d = link->d;
 	if (link->d)
 		(link->d)->u = link->u;
-	--(link->col)->size;
+	--((link->col)->size);
 }

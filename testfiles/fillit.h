@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/04 11:17:06 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/05 17:27:52 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/05 12:51:50 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,8 @@ void				append_col(t_col *col, t_col **list);
 void				append_link(t_link *link, t_link **list);
 void				insert_col(t_col *col, t_link *link);
 void				unlink_tet(t_col *col, t_env *env);
-void				unlink_tetromino(t_tet *tet, t_tet **list);
 void				unlink_link(t_link *link);
 void				unlink_col(t_col *col, t_col **grid);
-t_tet				*find_tet(t_tet **list, int id);
 void				create_env(t_env **env, t_tet **tets);
 void				create_grid(t_env *grid, unsigned int grid_size);
 unsigned int		get_width(char *tet);
@@ -83,9 +81,5 @@ char				*shift(char *tet, int offset, unsigned int grid_size);
 void				create_links(t_env *env);
 int					solve(t_env *env, char **solution, int num_tets);
 int					list_len(t_col *list);
-int					*get_next_permutation(int *n, int size);
 
-int					permute_tets(t_env *env);
-void				sort_tets(t_tet **list, int *arr, int size);
-int					*get_ids(t_tet **list, int num_tets);
 #endif

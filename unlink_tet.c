@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/04 18:19:10 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/04 19:46:05 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/05 18:09:45 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,10 @@ static void	unlink_id(unsigned int id, t_col **grid)
 	while (col)
 	{
 		if (!(col->size))
-				return ;
+		{
+			col = col->r;
+			continue ;
+		}
 		link = col->d;
 		while (link)
 		{
@@ -70,10 +73,10 @@ void	unlink_tet(t_col *col, t_env *env)
 	tmp = col->d;
 	while (tmp->l)
 		tmp = tmp->l;
+	unlink_id(tmp->id, env->grid);
 	while (tmp)
 	{
 		unlink_col(tmp->col, env->grid);
-		unlink_id(tmp->id, env->grid);
 		unlink_overlap(tmp->col);
 		tmp = tmp->r;
 	}

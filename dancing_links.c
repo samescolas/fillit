@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/04 16:17:26 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/04 20:58:03 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/05 17:59:50 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,40 +42,45 @@ static t_col	*choose_col(t_col **grid)
 			min = tmp;
 		tmp = tmp->r;
 	}
-	if (min->size == 0)
-	{
-		unlink_col(min, grid);
-		choose_col(grid);
-	}
-	printf("choosing column %d\n", min->id);
 	return (min);
 }
 
-static void		add_to_solution(char **solution, t_col *col)
+static int		add_to_solution(char **solution, t_col *col)
 {
 	t_link	*tmp;
 
 	if (!(col->size))
-		return ;
+		return (0);
 	tmp = col->d;
 	while (tmp->l)
 		tmp = tmp->l;
 	while (tmp)
 	{
-		(*solution)[(tmp->col)->id] = tmp->id;
+		if ((*solution)[(tmp->col)->id] == '\0')
+			(*solution)[(tmp->col)->id] = tmp->id;
+		else
+			return (0);
 		tmp = tmp->r;
 	}
+	return (1);
 }
 
-int		solve(t_env *env, char **solution)
+int		solve(t_env *env, char **solution, int num_tets)
 {
 	t_col	*col;
 
-	if (!*(env->grid))
-		return (1);
+	if (!*(env->grid) || !num_tets)
+		return (num_tets <= 0);
 	if (!(col = choose_col(env->grid)))
-		return (0);
-	add_to_solution(solution, col);
-	unlink_tet(col, env);
-	return (solve(env, solution));
+		return (num_tets <= 0);
+	if (!add_to_solution(solution, col))
+	{
+		unlink_col(col, env->grid);
+		return (solve(env, solution, num_tets));
+	}
+	else
+	{
+		unlink_tet(col, env);
+		return (solve(env, solution, num_tets - 1));
+	}
 }

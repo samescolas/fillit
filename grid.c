@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/03 09:47:24 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/04 20:34:56 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/05 17:27:21 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,14 @@ static void	estimate_grid_size(t_env *env)
 	}
 }
 
-void		create_grid(t_env *env)
+void		create_grid(t_env *env, unsigned int grid_size)
 {
 	unsigned int	i;
 
-	if (env->grid_size == 0)
+	if (grid_size == 0)
 		estimate_grid_size(env);
+	else
+		env->grid_size = grid_size;
 	i = 1;
 	*(env->grid) = create_col(0, NULL);
 	(*(env->grid))->root = *(env->grid);

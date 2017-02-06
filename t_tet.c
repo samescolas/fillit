@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 14:44:51 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/04 16:24:19 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/05 17:07:40 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,30 @@ void		append_tet(t_tet *tet, t_tet **list)
 		tmp->r = tet;
 		tet->l = tmp;
 	}
+}
+
+void		unlink_tetromino(t_tet *tet, t_tet **list)
+{
+	if (!(tet->l) && !(tet->r))
+		*list = (void *)0;
+	if (tet->l)
+		(tet->l)->r = tet->r;
+	else
+		*list = tet->r;
+	if (tet->r)
+		(tet->r)->l = tet->l;
+}
+
+t_tet		*find_tet(t_tet **list, int id)
+{
+	t_tet	*tet;
+
+	tet = *list;
+	while (tet)
+	{
+		if ((int)(tet->id) == id)
+			return (tet);
+		tet = tet->r;
+	}
+	return ((void *)0);
 }
