@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/04 11:17:06 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/05 17:27:52 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/06 15:16:41 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@
 # define PIECE_MARKER '#'
 # define EMPTY_MARKER '.'
 
+# include "libft.h"
 # include <unistd.h>
 # include <stdlib.h>
 # include <fcntl.h>
-# include "libft.h"
 # include <stdio.h> //testing
 
 typedef struct		s_col
@@ -30,6 +30,7 @@ typedef struct		s_col
 	struct s_col	*r;
 	struct s_link	*d;
 	struct s_col	*root;
+	struct s_col	*next_unlinked;
 }					t_col;
 
 typedef struct		s_link
@@ -40,6 +41,7 @@ typedef struct		s_link
 	struct s_link	*u;
 	struct s_link	*d;
 	struct s_col	*col;
+	struct s_link	*next_unlinked;
 }					t_link;
 
 typedef struct		s_tet
@@ -58,6 +60,8 @@ typedef struct		s_env
 	unsigned int	grid_size;
 	t_tet			**tets;
 	t_col			**grid;
+	t_link			**unlinked_links;
+	t_col			**unlinked_cols;
 }					t_env;
 
 void				read_file(char *path, t_tet **tets, t_env *env);
@@ -70,9 +74,8 @@ void				append_col(t_col *col, t_col **list);
 void				append_link(t_link *link, t_link **list);
 void				insert_col(t_col *col, t_link *link);
 void				unlink_tet(t_col *col, t_env *env);
-void				unlink_tetromino(t_tet *tet, t_tet **list);
-void				unlink_link(t_link *link);
-void				unlink_col(t_col *col, t_col **grid);
+void				unlink_link(t_link *link, t_link **unlinked_links);
+void				unlink_col(t_col *col, t_col **grid, t_col **unlinked_cols);
 t_tet				*find_tet(t_tet **list, int id);
 void				create_env(t_env **env, t_tet **tets);
 void				create_grid(t_env *grid, unsigned int grid_size);
@@ -84,8 +87,7 @@ void				create_links(t_env *env);
 int					solve(t_env *env, char **solution, int num_tets);
 int					list_len(t_col *list);
 int					*get_next_permutation(int *n, int size);
-
-int					permute_tets(t_env *env);
 void				sort_tets(t_tet **list, int *arr, int size);
 int					*get_ids(t_tet **list, int num_tets);
+
 #endif

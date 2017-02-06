@@ -12,8 +12,7 @@ SRCS = 					\
 	   shift.c			\
 	   links.c			\
 	   dancing_links.c	\
-	   unlink_tet.c		\
-	   permutations.c
+	   unlink_tet.c
 
 OBJS = $(SRCS:.c=.o)
 
@@ -26,8 +25,10 @@ $(NAME):
 
 clean: 
 	rm -f $(OBJS)
+	make clean -C libft
 
 fclean:
 	rm -f $(OBJS) $(NAME)
+	make fclean -C libft
 
 re: fclean all

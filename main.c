@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 14:03:26 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/05 17:53:52 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/06 13:59:44 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,21 +34,6 @@ void	print_solution(char *solution, unsigned int grid_size)
 	}
 }
 
-static void	remove_empty_columns(t_col **grid)
-{
-	t_col *col;
-
-	if (!grid || !*grid)
-		return ;
-	col = *grid;
-	while (col)
-	{
-		if (col->size == 0)
-			unlink_col(col, grid);
-		col = col->r;
-	}
-}
-
 void	setup_shop(t_env **env, char *path, char **solution, unsigned int grid_size)
 {
 	t_tet	**tets;
@@ -60,7 +45,6 @@ void	setup_shop(t_env **env, char *path, char **solution, unsigned int grid_size
 	create_grid(*env, grid_size);
 	*solution = ft_strnew(ft_exp((*env)->grid_size, 2));
 	create_links(*env);
-	remove_empty_columns((*env)->grid);
 }
 
 int		main(int ac, char **av)
@@ -87,15 +71,3 @@ int		main(int ac, char **av)
 		write(1, "usage: \n", 8);
 	return (0);
 }
-
-/*
-void	print_nums(int *nums, int size)
-{
-	int	i;
-
-	i = 0;
-	while (i < size)
-		printf("%d", nums[i++]);
-	printf("\n");
-}
-*/

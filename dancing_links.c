@@ -6,26 +6,11 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/04 16:17:26 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/05 17:59:50 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/06 15:13:54 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
-
-int				list_len(t_col *list)
-{
-	int		len;
-	t_col	*tmp;
-
-	len = 0;
-	tmp = list;
-	while (tmp)
-	{
-		++len;
-		tmp = tmp->r;
-	}
-	return (len);
-}
 
 static t_col	*choose_col(t_col **grid)
 {
@@ -65,7 +50,7 @@ static int		add_to_solution(char **solution, t_col *col)
 	return (1);
 }
 
-int		solve(t_env *env, char **solution, int num_tets)
+int				solve(t_env *env, char **solution, int num_tets)
 {
 	t_col	*col;
 
@@ -75,7 +60,7 @@ int		solve(t_env *env, char **solution, int num_tets)
 		return (num_tets <= 0);
 	if (!add_to_solution(solution, col))
 	{
-		unlink_col(col, env->grid);
+		unlink_col(col, env->grid, env->unlinked_cols);
 		return (solve(env, solution, num_tets));
 	}
 	else

@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 14:44:51 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/05 17:07:40 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/06 12:43:29 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,18 +46,6 @@ void		append_tet(t_tet *tet, t_tet **list)
 	}
 }
 
-void		unlink_tetromino(t_tet *tet, t_tet **list)
-{
-	if (!(tet->l) && !(tet->r))
-		*list = (void *)0;
-	if (tet->l)
-		(tet->l)->r = tet->r;
-	else
-		*list = tet->r;
-	if (tet->r)
-		(tet->r)->l = tet->l;
-}
-
 t_tet		*find_tet(t_tet **list, int id)
 {
 	t_tet	*tet;
@@ -70,4 +58,35 @@ t_tet		*find_tet(t_tet **list, int id)
 		tet = tet->r;
 	}
 	return ((void *)0);
+}
+
+static void	unlink_tetromino(t_tet *tet, t_tet **list)
+{
+	if (!(tet->l) && !(tet->r))
+		*list = (void *)0;
+	if (tet->l)
+		(tet->l)->r = tet->r;
+	else
+		*list = tet->r;
+	if (tet->r)
+		(tet->r)->l = tet->l;
+}
+
+void		sort_tets(t_tet **list, int *arr, int size)
+{
+	int		i;
+	t_tet	*tet;
+	t_tet	*ret;
+
+	ret = NULL;
+	i = 0;
+	while (i < size)
+	{
+		tet = find_tet(list, arr[i++]);
+		unlink_tetromino(tet, list);
+		tet->r = NULL;
+		tet->l = NULL;
+		append_tet(tet, &ret);
+	}
+	*list = ret;
 }
