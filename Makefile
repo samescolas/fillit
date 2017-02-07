@@ -12,7 +12,8 @@ SRCS = 					\
 	   shift.c			\
 	   links.c			\
 	   dancing_links.c	\
-	   unlink_tet.c
+	   unlink_tet.c		\
+	   relink.c
 
 OBJS = $(SRCS:.c=.o)
 

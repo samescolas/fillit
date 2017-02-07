@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/04 11:17:06 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/06 15:16:41 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/06 18:17:41 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ typedef struct		s_col
 	struct s_col	*r;
 	struct s_link	*d;
 	struct s_col	*root;
-	struct s_col	*next_unlinked;
 }					t_col;
 
 typedef struct		s_link
@@ -73,9 +72,10 @@ void				append_tet(t_tet *tet, t_tet **list);
 void				append_col(t_col *col, t_col **list);
 void				append_link(t_link *link, t_link **list);
 void				insert_col(t_col *col, t_link *link);
-void				unlink_tet(t_col *col, t_env *env);
+void				unlink_tet(t_link *link, t_env *env);
 void				unlink_link(t_link *link, t_link **unlinked_links);
-void				unlink_col(t_col *col, t_col **grid, t_col **unlinked_cols);
+void				unlink_col(t_col *col, t_col **grid);
+void				unlink_row(t_link *link, t_link **unlinked_rows);
 t_tet				*find_tet(t_tet **list, int id);
 void				create_env(t_env **env, t_tet **tets);
 void				create_grid(t_env *grid, unsigned int grid_size);
@@ -89,5 +89,6 @@ int					list_len(t_col *list);
 int					*get_next_permutation(int *n, int size);
 void				sort_tets(t_tet **list, int *arr, int size);
 int					*get_ids(t_tet **list, int num_tets);
+void				relink_tet(t_link *link, t_env *env, char *solution);
 
 #endif

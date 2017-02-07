@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/03 13:29:44 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/06 15:17:10 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/06 18:45:55 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ t_col	*create_col(unsigned int id, t_col *root)
 		col->l = NULL;
 		col->r = NULL;
 		col->d = NULL;
-		col->next_unlinked = NULL;
 		col->root = root;
 	}
 	return (col);
@@ -47,23 +46,6 @@ void	append_col(t_col *col, t_col **list)
 	}
 }
 
-static void	append_unlinked_col(t_col *col, t_col **list)
-{
-	t_col	*tmp;
-
-	if (!list)
-		return ;
-	if (!*list)
-		*list = col;
-	else
-	{
-		tmp = *list;
-		while (tmp->next_unlinked)
-			tmp = tmp->next_unlinked;
-		tmp->next_unlinked = col;
-	}
-}
-
 void	insert_col(t_col *col, t_link *link)
 {
 	t_link	*tmp;
@@ -83,7 +65,7 @@ void	insert_col(t_col *col, t_link *link)
 	}
 }
 
-void	unlink_col(t_col *col, t_col **grid, t_col **unlinked_cols)
+void	unlink_col(t_col *col, t_col **grid)
 {
 	if (!(col->l) && !(col->r))
 	{
@@ -96,5 +78,4 @@ void	unlink_col(t_col *col, t_col **grid, t_col **unlinked_cols)
 		*grid = col->r;
 	if (col->r)
 		(col->r)->l = col->l;
-	append_unlinked_col(col, unlinked_cols);
 }

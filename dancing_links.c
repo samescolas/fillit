@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/04 16:17:26 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/06 15:13:54 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/06 18:21:17 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,11 @@ static t_col	*choose_col(t_col **grid)
 	return (min);
 }
 
-static int		add_to_solution(char **solution, t_col *col)
+static int		add_to_solution(char **solution, t_link *link)
 {
 	t_link	*tmp;
 
-	if (!(col->size))
-		return (0);
-	tmp = col->d;
+	tmp = link;
 	while (tmp->l)
 		tmp = tmp->l;
 	while (tmp)
@@ -50,22 +48,36 @@ static int		add_to_solution(char **solution, t_col *col)
 	return (1);
 }
 
-int				solve(t_env *env, char **solution, int num_tets)
+static void		remove_empty_cols(t_col **grid)
 {
 	t_col	*col;
 
+	col = *grid;
+	while (col)
+	{
+		if (col->size == 0)
+			unlink_col(col, grid);
+		col = col->r;
+	}
+}
+
+int				solve(t_env *env, char **solution, int num_tets)
+{
+	t_col	*col;
+	t_link	*link;
+
 	if (!*(env->grid) || !num_tets)
 		return (num_tets <= 0);
+	remove_empty_cols(env->grid);
 	if (!(col = choose_col(env->grid)))
 		return (num_tets <= 0);
-	if (!add_to_solution(solution, col))
-	{
-		unlink_col(col, env->grid, env->unlinked_cols);
-		return (solve(env, solution, num_tets));
-	}
-	else
-	{
-		unlink_tet(col, env);
-		return (solve(env, solution, num_tets - 1));
-	}
+	link = col->d;
+	if (!add_to_solution(solution, link))
+		return (0);
+	unlink_tet(link, env);
+	if (solve(env, solution, num_tets - 1))
+		return (1);
+	relink_tet(link, env, *solution);
+	unlink_row(link, env->unlinked_links);
+	return (solve(env, solution, num_tets));
 }
