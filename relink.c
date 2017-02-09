@@ -5,145 +5,74 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/02/06 15:47:37 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/06 18:48:21 by sescolas         ###   ########.fr       */
+/*   Created: 2017/02/08 20:00:47 by sescolas          #+#    #+#             */
+/*   Updated: 2017/02/08 22:39:32 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-static int	relinkable(t_link *link, t_env *env, char *solution)
+static int	already_chosen(int id, char *solution, int len)
 {
-	unsigned int	i;
-	t_link			*tmp;
-	t_col			*col;
+	int		i;
 
 	i = 0;
-	while (i < env->grid_size)
-		if (solution[i++] == (char)(link->id))
-			return (0);
-	tmp = link;
-	while (tmp->l)
-		tmp = tmp->l;
-	while (tmp)
+	while (i < len)
+		if (solution[i++] == id)
+			return (1);
+	return (0);
+}
+
+static int	relinkable(t_link *link, t_env *env, char *solution)
+{
+	t_col	*tmp_col;
+	t_link	*tmp_link;
+	int		cols;
+
+	if (!link || !(*(env->grid)))
+		return (0);
+	tmp_col = *(env->grid);
+	tmp_link = link;
+	while (tmp_link)
 	{
-		col = *(env->grid);
-		while (col)
+		cols = count_cols(env->grid);
+		while (cols)
 		{
-			printf("relinkable\n");
-			if (col->id == (tmp->col)->id)
+			if (tmp_col->id == (tmp_link->col)->id)
 				break ;
-			col = col->r;
+			tmp_col = tmp_col->r;
+			--cols;
 		}
-		if (!col)
+		if (tmp_col->id != (tmp_link->col)->id)
 			return (0);
-		tmp = tmp->r;
-		printf("relinkable2\n");
+		tmp_link = tmp_link->r;
 	}
-	return (1);
+	return (!already_chosen(link->id, solution, ft_exp(env->grid_size, 2)));
 }
 
-static void	ununlink(t_link *link, t_link *prev, t_link **list)
-{
-	if (!prev && !(link->next_unlinked))
-	{
-		*list = (void *)0;
-		return ;
-	}
-	if (!prev)
-		*list = link->next_unlinked;
-	else
-		prev->next_unlinked = link->next_unlinked;
-	link->next_unlinked = NULL;
-}
-
-static void	relink_link(t_link *link, t_link *prev, t_link **list)
-{
-	if (link->u)
-		(link->u)->d = link;
-	else
-		(link->col)->d = link;
-	if (link->d)
-		(link->d)->u = link;
-	ununlink(link, prev, list);
-	++((link->col)->size);
-}
-
-static void	relink_links(char *solution, t_env *env)
+void		undo_unlink(t_link *link, t_env *env, char *solution)
 {
 	t_link	*tmp;
-	t_link	*link;
-	t_link	*prev;
 
-	printf("calling relink_links\n");
-	prev = (void *)0;
-	if (!*(env->unlinked_links))
-		return ;
-	tmp = *(env->unlinked_links);
+	tmp = link;
 	while (tmp)
+	{
+		relink_col(tmp->col, env->grid);
+		tmp = tmp->r;
+	}
+	while ((tmp = pop_link(env->unlinked_links)))
 	{
 		if (relinkable(tmp, env, solution))
 		{
-			link = tmp;
-			while (link->l)
-				link = link->l;
-			while (link)
+			while (tmp)
 			{
-				relink_link(link, prev, env->unlinked_links);
-				link = link->r;
-				printf("relink_links\n");
+				relink_link(tmp);
+				tmp = tmp->r;
 			}
 		}
-		printf("relink_links2\n");
-		prev = tmp;
-		tmp = tmp->next_unlinked;
+		else
+			break ;
 	}
-}
-
-static int	col_count(t_col **grid)
-{
-	t_col	*col;
-	int		len;
-
-	if (!*grid)
-		return (0);
-	len = 0;
-	col = *grid;
-	while (col)
-	{
-		++len;
-		col = col->r;
-	}
-	return (len);
-}
-
-void		relink_tet(t_link *link, t_env *env, char *solution)
-{
-	t_link	*tmp;
-
-	tmp = link;
-	while (tmp->l)
-		tmp = tmp->l;
-	while (tmp)
-	{
-		printf("relink_tet %d\n", tmp->id);
-		printf("col count: %d\n", col_count(env->grid));
-		for (int i = 0; i < 10000000; i++);
-		if (!((tmp->col)->l) && !((tmp->col)->r))
-			*(env->grid) = tmp->col;
-		else 
-		{
-			if (!((tmp->col)->l))
-			{
-				printf("here\n");
-				*(env->grid) = tmp->col;
-			}
-			else
-				((tmp->col)->l)->r = tmp->col;
-			if ((tmp->col)->r)
-				((tmp->col)->r)->l = tmp->col;
-		}
-		tmp = tmp->r;
-	}
-	relink_links(solution,  env);
+	if (tmp)
+		push_link(tmp, env->unlinked_links);
 }

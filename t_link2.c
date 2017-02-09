@@ -1,29 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   t_env.c                                            :+:      :+:    :+:   */
+/*   t_link2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/02/02 17:33:23 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/08 19:33:18 by sescolas         ###   ########.fr       */
+/*   Created: 2017/02/08 20:22:21 by sescolas          #+#    #+#             */
+/*   Updated: 2017/02/08 22:26:22 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-void	create_env(t_env **env, t_tet **tets)
+void	relink_link(t_link *link)
 {
-	if ((*env = (t_env *)malloc(sizeof(t_env))))
-	{
-		(*env)->grid_size = 0;
-		(*env)->num_tets = 0;
-		(*env)->num_rows = 0;
-		(*env)->tets = (t_tet **)malloc(sizeof(t_tet *));
-		(*env)->grid = (t_col **)malloc(sizeof(t_col *));
-		*((*env)->grid) = NULL;
-		(*env)->tets = tets;
-		(*env)->unlinked_links = (t_link **)malloc(sizeof(t_link *));
-		(*(*env)->unlinked_links) = (void *)0;
-	}
+	if (!link)
+		return ;
+	(link->col)->size++;
+	if ((link->col)->size == 1)
+		(link->col)->d = link;
+	(link->u)->d = link;
+	(link->d)->u = link;
 }

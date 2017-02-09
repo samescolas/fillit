@@ -6,13 +6,13 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/03 13:29:44 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/06 18:45:55 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/08 20:07:15 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-t_col	*create_col(unsigned int id, t_col *root)
+t_col	*create_col(int id, t_col *root)
 {
 	t_col	*col;
 
@@ -49,33 +49,53 @@ void	append_col(t_col *col, t_col **list)
 void	insert_col(t_col *col, t_link *link)
 {
 	t_link	*tmp;
+	int		i;
 
-	if (!col || !link)
-		return ;
-	link->col = col;
-	if ((col->size)++ == 0)
-		col->d = link;
-	else
+	if (col->size > 0)
 	{
+		i = 1;
 		tmp = col->d;
-		while (tmp->d)
+		while (i < col->size)
+		{
 			tmp = tmp->d;
+			++i;
+		}
 		tmp->d = link;
 		link->u = tmp;
+		link->d = col->d;
 	}
+	else
+	{
+		col->d = link;
+		link->d = link;
+		link->u = link;
+	}
+	col->size++;
+	link->col = col;
 }
 
 void	unlink_col(t_col *col, t_col **grid)
 {
-	if (!(col->l) && !(col->r))
+	if (col->l == col)
 	{
 		*grid = (void *)0;
 		return ;
 	}
-	if (col->l)
-		(col->l)->r = col->r;
-	else
+	if (*grid == col)
 		*grid = col->r;
-	if (col->r)
-		(col->r)->l = col->l;
+	(col->l)->r = col->r;
+	(col->r)->l = col->l;
+}
+
+void	relink_col(t_col *col, t_col **grid)
+{
+	if (!*grid)
+	{
+		*grid = col;
+		return ;
+	}
+	if (col->id < (col->l)->id)
+		*grid = col;
+	(col->l)->r = col;
+	(col->r)->l = col;
 }

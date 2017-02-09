@@ -6,13 +6,13 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/04 11:44:54 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/06 12:21:55 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/08 15:36:36 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-static void	translate_tets(t_tet **tets, unsigned int grid_size)
+static void	translate_tets(t_tet **tets, int grid_size)
 {
 	t_tet	*tet;
 
@@ -24,7 +24,7 @@ static void	translate_tets(t_tet **tets, unsigned int grid_size)
 	}
 }
 
-static void	str_to_grid(unsigned int id, char *pos, t_col **grid)
+static void	str_to_grid(int id, char *pos, t_col **grid, int *num_rows)
 {
 	int		i;
 	int		links_remaining;
@@ -35,11 +35,12 @@ static void	str_to_grid(unsigned int id, char *pos, t_col **grid)
 	links_remaining = 4;
 	col = *grid;
 	i = 0;
+	(*num_rows)++;
 	while (pos[i] && links_remaining)
 	{
 		if (pos[i++] == '1')
 		{
-			if (!(tmp = create_link(id)))
+			if (!(tmp = create_link(id, *num_rows)))
 				return ;
 			if (--links_remaining == 3)
 				list = tmp;
@@ -50,13 +51,13 @@ static void	str_to_grid(unsigned int id, char *pos, t_col **grid)
 	}
 }
 
-static void	add_to_grid(t_tet *tet, t_col **grid, int grid_size)
+static void	add_to_grid(t_tet *tet, t_col **grid, int grid_size, int *num_rows)
 {
-	unsigned int	i;
-	unsigned int	j;
+	int	i;
+	int	j;
 	char			*pos;
 
-	str_to_grid(tet->id, tet->pos, grid);
+	str_to_grid(tet->id, tet->pos, grid, num_rows);
 	i = -1;
 	while (++i < grid_size - tet->length + 1)
 	{
@@ -67,7 +68,7 @@ static void	add_to_grid(t_tet *tet, t_col **grid, int grid_size)
 				continue ;
 			if ((pos = shift(tet->pos, (i * grid_size) + j - 1, grid_size)))
 			{
-				str_to_grid(tet->id, pos, grid);
+				str_to_grid(tet->id, pos, grid, num_rows);
 				free(pos);
 			}
 			else
@@ -86,7 +87,7 @@ void		create_links(t_env *env)
 	tet = *(env->tets);
 	while (tet)
 	{
-		add_to_grid(tet, env->grid, env->grid_size);
+		add_to_grid(tet, env->grid, env->grid_size, &(env->num_rows));
 		tet = tet->r;
 	}
 }

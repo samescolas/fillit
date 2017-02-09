@@ -6,18 +6,18 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 15:09:42 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/04 16:08:56 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/08 19:00:15 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-char			*translate(char *tet, unsigned int grid_size)
+char			*translate(char *tet, int grid_size)
 {
-	unsigned int	r;
-	unsigned int	c;
-	unsigned int	k;
-	char			*ret;
+	int		r;
+	int		c;
+	int		k;
+	char	*ret;
 
 	if ((ret = (char *)malloc(((grid_size * grid_size) + 1) * sizeof(char))))
 	{
@@ -41,7 +41,7 @@ char			*translate(char *tet, unsigned int grid_size)
 	return (ret);
 }
 
-char			*shift(char *tet, int offset, unsigned int grid_size)
+char			*shift(char *tet, int offset, int grid_size)
 {
 	int		i;
 	int		j;
@@ -60,7 +60,7 @@ char			*shift(char *tet, int offset, unsigned int grid_size)
 	return (ret);
 }
 
-unsigned int	get_length(char *tet)
+int				get_length(char *tet)
 {
 	int		i;
 	int		j;
@@ -84,7 +84,7 @@ unsigned int	get_length(char *tet)
 	return (length);
 }
 
-unsigned int	get_width(char *tet)
+int				get_width(char *tet)
 {
 	int		i;
 	int		j;

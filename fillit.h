@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/04 11:17:06 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/06 18:17:41 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/08 22:05:40 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@
 
 typedef struct		s_col
 {
-	unsigned int	id;
-	unsigned int	size;
+	int	id;
+	int	size;
 	struct s_col	*l;
 	struct s_col	*r;
 	struct s_link	*d;
@@ -34,7 +34,8 @@ typedef struct		s_col
 
 typedef struct		s_link
 {
-	unsigned int	id;
+	int	id;
+	int	row;
 	struct s_link	*l;
 	struct s_link	*r;
 	struct s_link	*u;
@@ -45,9 +46,9 @@ typedef struct		s_link
 
 typedef struct		s_tet
 {
-	unsigned int	id;
-	unsigned int	length;
-	unsigned int	width;
+	int	id;
+	int	length;
+	int	width;
 	char			*pos;
 	struct s_tet	*r;
 	struct s_tet	*l;
@@ -55,8 +56,9 @@ typedef struct		s_tet
 
 typedef struct		s_env
 {
-	unsigned int	num_tets;
-	unsigned int	grid_size;
+	int				num_tets;
+	int				num_rows;
+	int				grid_size;
 	t_tet			**tets;
 	t_col			**grid;
 	t_link			**unlinked_links;
@@ -64,10 +66,10 @@ typedef struct		s_env
 }					t_env;
 
 void				read_file(char *path, t_tet **tets, t_env *env);
-char				*translate(char *str, unsigned int grid_size);
+char				*translate(char *str, int grid_size);
 t_tet				*create_tet(int id, char *pos);
-t_col				*create_col(unsigned int id, t_col *root);
-t_link				*create_link(unsigned int id);
+t_col				*create_col(int id, t_col *root);
+t_link				*create_link(int id, int row);
 void				append_tet(t_tet *tet, t_tet **list);
 void				append_col(t_col *col, t_col **list);
 void				append_link(t_link *link, t_link **list);
@@ -75,20 +77,31 @@ void				insert_col(t_col *col, t_link *link);
 void				unlink_tet(t_link *link, t_env *env);
 void				unlink_link(t_link *link, t_link **unlinked_links);
 void				unlink_col(t_col *col, t_col **grid);
-void				unlink_row(t_link *link, t_link **unlinked_rows);
 t_tet				*find_tet(t_tet **list, int id);
 void				create_env(t_env **env, t_tet **tets);
-void				create_grid(t_env *grid, unsigned int grid_size);
-unsigned int		get_width(char *tet);
-unsigned int		get_length(char *tet);
+void				create_grid(t_env *grid, int grid_size);
+int					get_width(char *tet);
+int					get_length(char *tet);
 char				*shift_top_left(char *tet);
-char				*shift(char *tet, int offset, unsigned int grid_size);
+char				*shift(char *tet, int offset, int grid_size);
 void				create_links(t_env *env);
 int					solve(t_env *env, char **solution, int num_tets);
+int					solve_new(t_env *env, char **solution, int num_tets, t_link *link);
 int					list_len(t_col *list);
 int					*get_next_permutation(int *n, int size);
 void				sort_tets(t_tet **list, int *arr, int size);
 int					*get_ids(t_tet **list, int num_tets);
 void				relink_tet(t_link *link, t_env *env, char *solution);
+int					count_cols(t_col **grid);
+t_col				*choose_col(t_col **grid);
+void				remove_empty_cols(t_col **grid);
+t_link				*pop_link(t_link **removed_links);
+void				push_link(t_link *link, t_link **removed_links);
+void				unlink_row(t_link *link, t_env *env);
+void				relink_col(t_col *col, t_col **grid);
+void				unlink_tet(t_link *link, t_env *env);
+void				undo_unlink(t_link *link, t_env *env, char *solution);
+void				relink_link(t_link *link);
+void				print_solution(char *solution, int grid_size);
 
 #endif

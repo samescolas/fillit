@@ -6,19 +6,20 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/04 13:25:10 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/06 18:28:06 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/08 22:55:01 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-t_link	*create_link(unsigned int id)
+t_link	*create_link(int id, int row)
 {
 	t_link	*link;
 
 	if ((link = (t_link *)malloc(sizeof(t_link))))
 	{
 		link->id = id;
+		link->row = row;
 		link->l = NULL;
 		link->r = NULL;
 		link->u = NULL;
@@ -47,36 +48,39 @@ void	append_link(t_link *link, t_link **list)
 	}
 }
 
-static void	append_unlinked_link(t_link *link, t_link **list)
+void	push_link(t_link *link, t_link **removed_links)
 {
-	t_link	*tmp;
-
-	if (!list)
-		return ;
-	if (!*list)
-		*list = link;
-	else
-	{
-		tmp = *list;
-		while (tmp->next_unlinked)
-			tmp = tmp->next_unlinked;
-		tmp->next_unlinked = link;
-	}
+	if (*removed_links)
+		link->next_unlinked = *removed_links;
+	*removed_links = link;
 }
 
-void	unlink_link(t_link *link, t_link **unlinked_links)
+t_link	*pop_link(t_link **removed_links)
 {
-	if (!((link->l && (link->l)->r == link) ||
-				((link->r && (link->r)->l == link))))
-		return ;
-	if (!(link->d) && !(link->u))
+	t_link	*link;
+
+	if (!*removed_links)
+		return ((void *)0);
+	link = *removed_links;
+	*removed_links = link->next_unlinked;
+	return (link);
+}
+
+void	unlink_link(t_link *link, t_link **removed_links)
+{
+	if ((link->col)->size == 1)
+	{
+		(link->col)->size = 0;
 		(link->col)->d = (void *)0;
-	if (link->u)
-		(link->u)->d = link->d;
-	else
+		return ;
+	}
+	if ((link->col)->d == link)
 		(link->col)->d = link->d;
-	if (link->d)
-		(link->d)->u = link->u;
-	--((link->col)->size);
-	append_unlinked_link(link, unlinked_links);
+	(link->u)->d = link->d;
+	(link->d)->u = link->u;
+	if (!(link->l))
+		push_link(link, removed_links);
+	if ((link->col)->size == 0)
+		printf("This is where something's going wrong!\n");
+	((link->col)->size)--;
 }

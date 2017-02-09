@@ -5,14 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/02/08 20:28:12 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/08 22:10:28 by sescolas         ###   ########.fr       */
+/*   Created: 2017/02/02 14:03:26 by sescolas          #+#    #+#             */
+/*   Updated: 2017/02/08 20:29:24 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-void	print_solution(char *solution, int grid_size)
+void	print_solution(char *solution, uint grid_size)
 {
 	int		i;
 	int		j;
@@ -53,21 +53,33 @@ int		main(int ac, char **av)
 	t_tet	**tets;
 	char	*solution;
 	int		grid_size;
+	//t_col	*col;
+	//t_link	*tmp;
 
 	tets = (t_tet **)malloc(sizeof(t_tet *));
 	*tets = NULL;
 	if (ac == 2)
-	{	
+	{
+	/*
 		setup_shop(&env, av[1], &solution, 0);
-		grid_size = env->grid_size;
-		while (!solve(env, &solution, env->num_tets))
+		remove_empty_cols(env->grid);
+		col = choose_col(env->grid);
+		tmp = col->d;
+		while (tmp)
 		{
-			++grid_size;
-			setup_shop(&env, av[1], &solution, grid_size);
+			update_solution(&solution, tmp);
+			*/
+			setup_shop(&env, av[1], &solution, 0);
+			grid_size = env->grid_size;
+			while (!solve_new(env, &solution, env->num_tets, (void *)0))
+			{
+				++grid_size;
+				setup_shop(&env, av[1], &solution, grid_size);
+			}
+			print_solution(solution, env->grid_size);
+			printf("\n");
+			//tmp = tmp->d;
 		}
-		print_solution(solution, env->grid_size);
-		printf("\n");
-	}
 	else
 		write(1, "usage: \n", 8);
 	return (0);
