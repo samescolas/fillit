@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/08 18:41:24 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/08 23:10:46 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/11 13:34:05 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@ static void		update_solution(t_link *link, char **solution, int len, int add)
 	if (add)
 	{
 		tmp = link;
-		while(tmp)
+		while (tmp->l)
+			tmp = tmp->l;
+		while (tmp)
 		{
 			(*solution)[(tmp->col)->id] = tmp->id;
 			tmp = tmp->r;
@@ -33,7 +35,8 @@ static void		update_solution(t_link *link, char **solution, int len, int add)
 				(*solution)[i - 1] = '\0';
 }
 
-t_col	*choose_col(t_col **grid)
+/*
+t_col			*choose_col(t_col **grid)
 {
 	t_col	*tmp;
 	t_col	*min;
@@ -43,7 +46,7 @@ t_col	*choose_col(t_col **grid)
 		return ((void *)0);
 	tmp = *grid;
 	cols = count_cols(grid);
-	while (cols && tmp->size == 0)
+	while (cols && tmp->size <= 0)
 	{
 		--cols;
 		tmp = tmp->r;
@@ -59,55 +62,54 @@ t_col	*choose_col(t_col **grid)
 		tmp = tmp->r;
 		--cols;
 	}
-	return (min->size ? min : (void *)0);
+	return (min);
 }
+*/
+t_col			*choose_col(t_col **grid)
+{
+	t_col	*col;
+	t_col	*min;
+	int		num_cols;
+
+	col = *grid;
+	min = col;
+	num_cols = count_cols(grid);
+	while (num_cols)
+	{
+		if (col->size <= 0)
+		{
+			col = col->r;
+			--num_cols;
+			continue ;
+		}
+		if (col->size == 1)
+			return (col);
+		if (col->size < min->size || min->size == 0)
+			min = col;
+		col = col->r;
+		--num_cols;
+	}
+	return (min);
+}
+
 
 int				solve(t_env *env, char **solution, int unplaced_tets)
 {
 	t_col	*col;
 	t_link	*link;
-	t_link	*tmp;
 
-	printf("entering solve\nunplaced_tets: %d\tcolumns: %d\nboard:\n", unplaced_tets, count_cols(env->grid));
-	print_solution(*solution, env->grid_size);
-	if (!unplaced_tets || !(*(env->grid)))
-	{
-		printf("%s!\n", (unplaced_tets == 0 ? "done" : "problems"));
+	if (!unplaced_tets || !env->grid || !*env->grid)
 		return (unplaced_tets == 0);
-	}
-	printf("choosing a column\n");
-	if (!(col = choose_col(env->grid)))
-		return (0);
-	printf("chose column\nid: %d\tsize: %d\n", col->id, col->size);
+	col = choose_col(env->grid);
+	if (!col || col->size == 0)
+		return (unplaced_tets == 0);
 	link = col->d;
-	printf("chose link\nid: %d\trow: %d\tcol: %d\n", link->id, link->row, (link->col)->id);
-	while (link->l)
-	{
-		printf("finding beginning of piece\n");
-		link = link->l;
-	}
-	printf("unlinking tet\n");
+	unlink_row(link, env);
 	unlink_tet(link, env);
-	printf("unlinked!\nupdating solution\n");
 	update_solution(link, solution, ft_exp(env->grid_size, 2), 1);
-	printf("updated (hopefully)\n");
 	if (solve(env, solution, unplaced_tets - 1))
-	{
-		printf("did it!\n");
 		return (1);
-	}
-	printf("no bueno -- removing from solution\n");
 	update_solution(link, solution, ft_exp(env->grid_size, 2), 0);
-	printf("removed from solution\nundoing unlinking process\n");
 	undo_unlink(link, env, *solution);
-	printf("done undoing unlink\nremoving piece %d from col %d\n", link->id, (link->col)->id);
-	tmp = link;
-	while (tmp)
-	{
-		if ((link->col)->size)
-			unlink_link(tmp, env->unlinked_links);
-		tmp = tmp->r;
-	}
-	printf("unlinked row\n");
 	return (solve(env, solution, unplaced_tets));
 }

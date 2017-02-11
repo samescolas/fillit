@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/04 13:25:10 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/08 22:55:01 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/11 11:09:03 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,19 +68,21 @@ t_link	*pop_link(t_link **removed_links)
 
 void	unlink_link(t_link *link, t_link **removed_links)
 {
-	if ((link->col)->size == 1)
+	if (!link)
+		return ;
+	if (link->col->size == 1)
 	{
-		(link->col)->size = 0;
-		(link->col)->d = (void *)0;
+		link->col->size = 0;
+		link->col->d = (void *)0;
+		if (link->l == NULL)
+			push_link(link, removed_links);
 		return ;
 	}
-	if ((link->col)->d == link)
-		(link->col)->d = link->d;
-	(link->u)->d = link->d;
-	(link->d)->u = link->u;
-	if (!(link->l))
+	else if (link->col->d == link)
+		link->col->d = link->d;
+	link->u->d = link->d;
+	link->d->u = link->u;
+	if (link->l == NULL)
 		push_link(link, removed_links);
-	if ((link->col)->size == 0)
-		printf("This is where something's going wrong!\n");
-	((link->col)->size)--;
+	link->col->size--;
 }

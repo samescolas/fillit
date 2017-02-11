@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/04 11:44:54 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/08 15:36:36 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/11 11:08:13 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,9 @@ static void	str_to_grid(int id, char *pos, t_col **grid, int *num_rows)
 
 static void	add_to_grid(t_tet *tet, t_col **grid, int grid_size, int *num_rows)
 {
-	int	i;
-	int	j;
-	char			*pos;
+	int		i;
+	int		j;
+	char	*pos;
 
 	str_to_grid(tet->id, tet->pos, grid, num_rows);
 	i = -1;

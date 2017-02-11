@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/08 20:28:12 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/08 22:10:28 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/11 12:01:45 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	print_solution(char *solution, int grid_size)
 {
 	int		i;
 	int		j;
+	char	c;
 
 	i = 0;
 	j = 0;
@@ -25,11 +26,14 @@ void	print_solution(char *solution, int grid_size)
 		while (j < grid_size)
 		{
 			if (solution[j++ + i])
-				printf("%c", solution[(j - 1) + i] + 'A' - 1);
+			{
+				c = solution[(j - 1) + i] + 'A' - 1;
+				write(1, &c, 1);
+			}
 			else
-				printf(".");
+				write(1, ".", 1);
 		}
-		printf("\n");
+		write(1, "\n", 1);
 		i += grid_size;
 	}
 }
@@ -57,7 +61,7 @@ int		main(int ac, char **av)
 	tets = (t_tet **)malloc(sizeof(t_tet *));
 	*tets = NULL;
 	if (ac == 2)
-	{	
+	{
 		setup_shop(&env, av[1], &solution, 0);
 		grid_size = env->grid_size;
 		while (!solve(env, &solution, env->num_tets))
@@ -66,7 +70,7 @@ int		main(int ac, char **av)
 			setup_shop(&env, av[1], &solution, grid_size);
 		}
 		print_solution(solution, env->grid_size);
-		printf("\n");
+		write(1, "\n", 1);
 	}
 	else
 		write(1, "usage: \n", 8);

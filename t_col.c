@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/03 13:29:44 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/08 20:07:15 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/11 11:08:44 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ void	insert_col(t_col *col, t_link *link)
 	{
 		i = 1;
 		tmp = col->d;
+		tmp->u = link;
+		link->d = tmp;
 		while (i < col->size)
 		{
 			tmp = tmp->d;
@@ -62,7 +64,6 @@ void	insert_col(t_col *col, t_link *link)
 		}
 		tmp->d = link;
 		link->u = tmp;
-		link->d = col->d;
 	}
 	else
 	{

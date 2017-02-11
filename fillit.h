@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/04 11:17:06 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/08 22:05:40 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/11 11:04:07 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,11 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <fcntl.h>
-# include <stdio.h> //testing
 
 typedef struct		s_col
 {
-	int	id;
-	int	size;
+	int				id;
+	int				size;
 	struct s_col	*l;
 	struct s_col	*r;
 	struct s_link	*d;
@@ -34,8 +33,8 @@ typedef struct		s_col
 
 typedef struct		s_link
 {
-	int	id;
-	int	row;
+	int				id;
+	int				row;
 	struct s_link	*l;
 	struct s_link	*r;
 	struct s_link	*u;
@@ -46,9 +45,9 @@ typedef struct		s_link
 
 typedef struct		s_tet
 {
-	int	id;
-	int	length;
-	int	width;
+	int				id;
+	int				length;
+	int				width;
 	char			*pos;
 	struct s_tet	*r;
 	struct s_tet	*l;
@@ -86,7 +85,6 @@ char				*shift_top_left(char *tet);
 char				*shift(char *tet, int offset, int grid_size);
 void				create_links(t_env *env);
 int					solve(t_env *env, char **solution, int num_tets);
-int					solve_new(t_env *env, char **solution, int num_tets, t_link *link);
 int					list_len(t_col *list);
 int					*get_next_permutation(int *n, int size);
 void				sort_tets(t_tet **list, int *arr, int size);
@@ -103,5 +101,6 @@ void				unlink_tet(t_link *link, t_env *env);
 void				undo_unlink(t_link *link, t_env *env, char *solution);
 void				relink_link(t_link *link);
 void				print_solution(char *solution, int grid_size);
+void				display_grid(t_env *env);
 
 #endif

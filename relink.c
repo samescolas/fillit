@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/08 20:00:47 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/08 22:39:32 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/11 13:40:23 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ void		undo_unlink(t_link *link, t_env *env, char *solution)
 	t_link	*tmp;
 
 	tmp = link;
+	while (tmp->l)
+		tmp = tmp->l;
 	while (tmp)
 	{
 		relink_col(tmp->col, env->grid);
@@ -62,7 +64,9 @@ void		undo_unlink(t_link *link, t_env *env, char *solution)
 	}
 	while ((tmp = pop_link(env->unlinked_links)))
 	{
-		if (relinkable(tmp, env, solution))
+		if (tmp->row == link->row || !relinkable(tmp, env, solution))
+			break ;
+		else
 		{
 			while (tmp)
 			{
@@ -70,8 +74,6 @@ void		undo_unlink(t_link *link, t_env *env, char *solution)
 				tmp = tmp->r;
 			}
 		}
-		else
-			break ;
 	}
 	if (tmp)
 		push_link(tmp, env->unlinked_links);
