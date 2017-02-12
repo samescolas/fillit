@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 14:03:20 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/11 11:08:06 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/11 19:54:23 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static int		validate(char *tet)
 	int		markers_remaining;
 	int		i;
 
-	if (tet[20] != '\n')
+	if (tet[20] != '\n' && tet[20] != '\0')
 		return (0);
 	tet[20] = '\0';
 	markers_remaining = 4;
@@ -84,10 +84,10 @@ void			read_file(char *path, t_tet **tets, t_env *env)
 		if (*tet)
 		{
 			*tets = NULL;
-			write(2, "err: invalid input\n", 19);
+			write(1, "error\n", 6);
 			exit(1);
 		}
 	}
 	else
-		write(2, "err: invalid file\n", 18);
+		write(1, "error\n", 6);
 }

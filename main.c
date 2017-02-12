@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/08 20:28:12 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/11 13:52:56 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/11 19:46:54 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ int		main(int ac, char **av)
 			setup_shop(&env, av[1], &solution, grid_size);
 		}
 		print_solution(solution, env->grid_size);
-		write(1, "\n", 1);
 	}
 	else
 		write(1, "usage: \n", 8);
