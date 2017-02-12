@@ -1,17 +1,19 @@
 echo "removing old puzzles..\n"
 rm v*
 echo "generating fresh puzzles...\n"
-for i in 1 2 3 4 5 6 7 8 9
+for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
 do
 	./generator $i > "v$i"
+	echo "\n\ntesting file v$i...\n"
+	time ./fillit "v$i"
 done
 
-echo "valid files: \n"
-for FILE in ./v*
-do
-	echo "\nfile: $FILE"
-	time ./fillit $FILE
-done
+#echo "valid files: \n"
+#for FILE in ./v*
+#do
+#	echo "\nfile: $FILE"
+#	time ./fillit $FILE
+#done
 
 echo "\n\ninvalid files: \n"
 for FILE in ./i*

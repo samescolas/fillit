@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+/* ************************************************************************* */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   unlink_tet.c                                       :+:      :+:    :+:   */
@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/08 19:15:54 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/11 13:39:52 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/11 15:29:08 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void		unlink_tet(t_link *link, t_env *env)
 	int		num_links;
 
 	col = *(env->grid);
-	if (!(num_cols = count_cols(env->grid)))
+	if (!(num_cols = env->num_cols))
 		return ;
 	while (num_cols)
 	{
@@ -81,7 +81,7 @@ void		unlink_tet(t_link *link, t_env *env)
 	tmp = link;
 	while (tmp)
 	{
-		unlink_col(tmp->col, env->grid);
+		unlink_col(tmp->col, env);
 		tmp = tmp->r;
 	}
 }

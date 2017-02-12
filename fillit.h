@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/04 11:17:06 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/11 11:04:07 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/11 14:02:40 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct		s_tet
 typedef struct		s_env
 {
 	int				num_tets;
+	int				num_cols;
 	int				num_rows;
 	int				grid_size;
 	t_tet			**tets;
@@ -75,7 +76,7 @@ void				append_link(t_link *link, t_link **list);
 void				insert_col(t_col *col, t_link *link);
 void				unlink_tet(t_link *link, t_env *env);
 void				unlink_link(t_link *link, t_link **unlinked_links);
-void				unlink_col(t_col *col, t_col **grid);
+void				unlink_col(t_col *col, t_env *env);
 t_tet				*find_tet(t_tet **list, int id);
 void				create_env(t_env **env, t_tet **tets);
 void				create_grid(t_env *grid, int grid_size);
@@ -90,13 +91,13 @@ int					*get_next_permutation(int *n, int size);
 void				sort_tets(t_tet **list, int *arr, int size);
 int					*get_ids(t_tet **list, int num_tets);
 void				relink_tet(t_link *link, t_env *env, char *solution);
-int					count_cols(t_col **grid);
-t_col				*choose_col(t_col **grid);
+//int					count_cols(t_col **grid);
+t_col				*choose_col(t_col **grid, int num_cols);
 void				remove_empty_cols(t_col **grid);
 t_link				*pop_link(t_link **removed_links);
 void				push_link(t_link *link, t_link **removed_links);
 void				unlink_row(t_link *link, t_env *env);
-void				relink_col(t_col *col, t_col **grid);
+void				relink_col(t_col *col, t_env *env);
 void				unlink_tet(t_link *link, t_env *env);
 void				undo_unlink(t_link *link, t_env *env, char *solution);
 void				relink_link(t_link *link);

@@ -5,7 +5,6 @@ SRCS = 					\
 	   input.c			\
 	   t_tet.c			\
 	   t_col.c			\
-	   t_col2.c			\
 	   t_link.c			\
 	   t_link2.c		\
 	   t_env.c			\

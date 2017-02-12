@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/03 13:29:44 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/11 11:08:44 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/11 14:08:50 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,28 +75,28 @@ void	insert_col(t_col *col, t_link *link)
 	link->col = col;
 }
 
-void	unlink_col(t_col *col, t_col **grid)
+void	unlink_col(t_col *col, t_env *env)
 {
 	if (col->l == col)
 	{
-		*grid = (void *)0;
+		*(env->grid) = (void *)0;
 		return ;
 	}
-	if (*grid == col)
-		*grid = col->r;
+	if (*(env->grid) == col)
+		*(env->grid) = col->r;
 	(col->l)->r = col->r;
 	(col->r)->l = col->l;
 }
 
-void	relink_col(t_col *col, t_col **grid)
+void	relink_col(t_col *col, t_env *env)
 {
-	if (!*grid)
+	if (!*(env->grid))
 	{
-		*grid = col;
+		*(env->grid) = col;
 		return ;
 	}
 	if (col->id < (col->l)->id)
-		*grid = col;
+		*(env->grid) = col;
 	(col->l)->r = col;
 	(col->r)->l = col;
 }
