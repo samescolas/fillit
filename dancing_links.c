@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/08 18:41:24 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/11 15:32:58 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/25 17:15:47 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,33 +35,50 @@ static void		update_solution(t_link *link, char **solution, int len, int add)
 				(*solution)[i - 1] = '\0';
 }
 
-t_col			*choose_col(t_col **grid, int num_cols)
+static t_link	*col_find(t_col *col, int id)
 {
-	t_col	*col;
+	t_link	*tmp;
+	int		num_links;
 
-	col = *grid;
-	while (num_cols)
+	tmp = col->d;
+	num_links = col->size;
+	while (num_links)
 	{
-		if (col->size > 0)
-			return (col);
-		col = col->r;
-		--num_cols;
+		if (tmp->id == id)
+			return (tmp);
+		tmp = tmp->d;
+		--num_links;
 	}
-	return (col);
+	return ((void *)0);
 }
 
-
-int				solve(t_env *env, char **solution, int unplaced_tets)
+t_link			*choose_link(t_col **grid, int num_cols, int id)
 {
 	t_col	*col;
 	t_link	*link;
 
+	col = *grid;
+	link = (void *)0;
+	while (num_cols)
+	{
+		if (col->size > 0 && (link = col_find(col, id)) != (void *)0)
+			return (link);
+		col = col->r;
+		--num_cols;
+	}
+	return (link);
+}
+
+int				solve(t_env *env, char **solution, int unplaced_tets)
+{
+	t_link	*link;
+
 	if (!unplaced_tets || !env->grid || !*env->grid)
 		return (!unplaced_tets);
-	col = choose_col(env->grid, env->num_cols);
-	if (!col || col->size == 0)
+	link = choose_link(\
+			env->grid, env->num_cols, env->num_tets - unplaced_tets + 1);
+	if (!link)
 		return (!unplaced_tets);
-	link = col->d;
 	unlink_row(link, env);
 	unlink_tet(link, env);
 	env->num_cols -= 4;

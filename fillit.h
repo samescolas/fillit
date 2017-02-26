@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/04 11:17:06 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/11 14:02:40 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/25 17:16:08 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,7 @@ int					*get_next_permutation(int *n, int size);
 void				sort_tets(t_tet **list, int *arr, int size);
 int					*get_ids(t_tet **list, int num_tets);
 void				relink_tet(t_link *link, t_env *env, char *solution);
-//int					count_cols(t_col **grid);
-t_col				*choose_col(t_col **grid, int num_cols);
+t_link				*choose_link(t_col **grid, int num_cols, int id);
 void				remove_empty_cols(t_col **grid);
 t_link				*pop_link(t_link **removed_links);
 void				push_link(t_link *link, t_link **removed_links);
