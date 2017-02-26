@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/04 11:17:06 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/25 17:16:08 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/25 20:41:11 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef struct		s_col
 	struct s_col	*r;
 	struct s_link	*d;
 	struct s_col	*root;
+	struct s_col	*next_unlinked;
 }					t_col;
 
 typedef struct		s_link
@@ -62,7 +63,7 @@ typedef struct		s_env
 	t_tet			**tets;
 	t_col			**grid;
 	t_link			**unlinked_links;
-	t_col			**unlinked_cols;
+	t_col			*unlinked_cols;
 }					t_env;
 
 void				read_file(char *path, t_tet **tets, t_env *env);
@@ -102,5 +103,7 @@ void				undo_unlink(t_link *link, t_env *env, char *solution);
 void				relink_link(t_link *link);
 void				print_solution(char *solution, int grid_size);
 void				display_grid(t_env *env);
+void				free_grid(t_col **grid, t_env *env);
+void				free_tets(t_tet **tets);
 
 #endif

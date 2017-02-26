@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/08 19:15:54 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/25 17:06:41 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/25 20:31:35 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,22 @@ void		unlink_row(t_link *link, t_env *env)
 	}
 }
 
+static void	unlink_tet3(t_link *tmp, t_env *env)
+{
+	while (tmp)
+	{
+		unlink_col(tmp->col, env);
+		tmp = tmp->r;
+	}
+}
+
+static void	unlink_tet2(t_link *tmp, t_link *link, t_env *env)
+{
+	if (tmp->id == link->id || overlapping(tmp, link))
+		if (link->row != tmp->row)
+			unlink_row(tmp, env);
+}
+
 void		unlink_tet(t_link *link, t_env *env)
 {
 	t_col	*col;
@@ -59,29 +75,19 @@ void		unlink_tet(t_link *link, t_env *env)
 	col = *(env->grid);
 	if (!(num_cols = env->num_cols))
 		return ;
-	while (num_cols)
+	while (num_cols--)
 	{
 		if ((num_links = col->size))
 		{
 			tmp = col->d;
-			while (num_links > 0)
+			while (num_links-- > 0)
 			{
-				if (tmp->id == link->id || overlapping(tmp, link))
-				{
-					if (link->row != tmp->row)
-						unlink_row(tmp, env);
-				}
-				--num_links;
+				unlink_tet2(tmp, link, env);
 				tmp = tmp->d;
 			}
 		}
-		--num_cols;
 		col = col->r;
 	}
 	tmp = link;
-	while (tmp)
-	{
-		unlink_col(tmp->col, env);
-		tmp = tmp->r;
-	}
+	unlink_tet3(tmp, env);
 }

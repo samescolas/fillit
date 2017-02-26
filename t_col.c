@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/03 13:29:44 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/11 14:08:50 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/25 19:27:58 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ t_col	*create_col(int id, t_col *root)
 		col->r = NULL;
 		col->d = NULL;
 		col->root = root;
+		col->next_unlinked = NULL;
 	}
 	return (col);
 }
@@ -86,10 +87,20 @@ void	unlink_col(t_col *col, t_env *env)
 		*(env->grid) = col->r;
 	(col->l)->r = col->r;
 	(col->r)->l = col->l;
+	if (!env->unlinked_cols)
+		env->unlinked_cols = col;
+	else
+	{
+		col->next_unlinked = env->unlinked_cols;
+		env->unlinked_cols = col;
+	}
 }
 
 void	relink_col(t_col *col, t_env *env)
 {
+	t_col	*c;
+	int		cols;
+
 	if (!*(env->grid))
 	{
 		*(env->grid) = col;
@@ -99,4 +110,15 @@ void	relink_col(t_col *col, t_env *env)
 		*(env->grid) = col;
 	(col->l)->r = col;
 	(col->r)->l = col;
+	c = env->unlinked_cols;
+	cols = 4;
+	while (cols--)
+	{
+		if (c != (void *)0)
+		{
+			env->unlinked_cols = c->next_unlinked;
+			c->next_unlinked = NULL;
+			c = env->unlinked_cols;
+		}
+	}
 }

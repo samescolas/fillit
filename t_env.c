@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 17:33:23 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/11 13:58:49 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/25 18:01:17 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	create_env(t_env **env, t_tet **tets)
 		(*env)->grid = (t_col **)malloc(sizeof(t_col *));
 		*((*env)->grid) = NULL;
 		(*env)->tets = tets;
+		(*env)->unlinked_cols = (void *)0;
 		(*env)->unlinked_links = (t_link **)malloc(sizeof(t_link *));
 		(*(*env)->unlinked_links) = (void *)0;
 	}

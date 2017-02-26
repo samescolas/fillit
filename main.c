@@ -6,13 +6,13 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/08 20:28:12 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/11 19:46:54 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/25 20:38:19 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-void	print_solution(char *solution, int grid_size)
+void		print_solution(char *solution, int grid_size)
 {
 	int		i;
 	int		j;
@@ -38,7 +38,7 @@ void	print_solution(char *solution, int grid_size)
 	}
 }
 
-void	setup_shop(t_env **env, char *path, char **solution, int grid_size)
+static void	setup_shop(t_env **env, char *path, char **solution, int grid_size)
 {
 	t_tet	**tets;
 
@@ -51,7 +51,18 @@ void	setup_shop(t_env **env, char *path, char **solution, int grid_size)
 	create_links(*env);
 }
 
-int		main(int ac, char **av)
+static void	cleanup(t_env *env, int solved)
+{
+	free_grid(env->grid, env);
+	if (solved)
+	{
+		free_tets(env->tets);
+		free(env);
+		env = (void *)0;
+	}
+}
+
+int			main(int ac, char **av)
 {
 	t_env	*env;
 	t_tet	**tets;
@@ -67,11 +78,13 @@ int		main(int ac, char **av)
 		while (!solve(env, &solution, env->num_tets))
 		{
 			++grid_size;
+			cleanup(env, 0);
 			setup_shop(&env, av[1], &solution, grid_size);
 		}
 		print_solution(solution, env->grid_size);
+		cleanup(env, 1);
 	}
 	else
-		write(1, "usage: \n", 8);
+		write(1, "usage: fillit target_file\n", 26);
 	return (0);
 }

@@ -14,7 +14,9 @@ SRCS = 					\
 	   links.c			\
 	   unlink_tet.c		\
 	   relink.c			\
-	   dancing_links.c
+	   dancing_links.c	\
+	   semantics.c		\
+	   semantics2.c
 
 OBJS = $(SRCS:.c=.o)
 
@@ -22,8 +24,8 @@ all: $(NAME)
 
 $(NAME):
 	make -C libft
-	gcc -g -Wall -Werror -Wextra  -c $(SRCS) -I libft
-	gcc -L libft -lft $(OBJS) -o $(NAME)
+	gcc -Wall -Werror -Wextra  -c $(SRCS) -I libft
+	gcc -fsanitize=address -L libft -lft $(OBJS) -o $(NAME)
 
 clean: 
 	rm -f $(OBJS)
